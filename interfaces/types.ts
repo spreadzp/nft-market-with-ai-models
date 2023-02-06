@@ -7,7 +7,7 @@ export interface NFTProps {
     seller?: string,
     owner?: string,
     image?: string,
-    playbackId?: string, 
+    decodedImage?: string, 
     encodedInfo: string,
     name?: string,
     description?: string,

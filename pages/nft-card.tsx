@@ -24,7 +24,7 @@ function NftCard({ nftItem, index, userAddress }: NftCardProps) {
   const [isLoadedContent, setIsLoadedContent] = useState(false)
   const router = useRouter()
   useEffect(() => {
-    if(nft.image){ 
+    if(nft?.image){ 
  
         const getImg = async (url: string) => {
 
@@ -112,18 +112,22 @@ function NftCard({ nftItem, index, userAddress }: NftCardProps) {
       console.log('nft.encodedInfo', nft.encodedInfo)
       const dk = await decryptPrivateKey(nft.encodedInfo, userAddress);
   
-      if (dk && nft.playbackId) {
+      if (dk ) {
         console.log("🚀 ~ file: nft-card.tsx:28 ~ decryptData ~ dk", dk)
-        // const encodedImageData = await axios.get(nft?.image ?? '')
-        console.log('nft.playbackId', nft.playbackId)
-        const dm = await decryptUriFile(nft.playbackId, dk);
-        nft.playbackId = dm
-        console.log('nft.playbackId :>>', nft.playbackId)
-        setNft(nft)
+        const encodedImageData = await axios.get(nft?.image ?? '')
+        console.log("🚀 ~ file: nft-card.tsx:118 ~ decryptData ~ nft?.image", nft?.image)
+        if(encodedImageData) {
+          const decImage = await decryptUriFile(encodedImageData.data, dk);
+          nft.decodedImage = decImage;
+          setNft(nft)
+        }
+     
+        
+     
         // setDecodedFile(nft.image?.split(',')[0].split(";")[1])
         // console.log('decodedFile', decodedFile)
       }
-    }catch (err: any) {
+    } catch (err: any) {
       console.log('err', err)
     } finally{
       setIsLoadedContent(false)
@@ -145,10 +149,12 @@ function NftCard({ nftItem, index, userAddress }: NftCardProps) {
   }
   return (<>
     <div key={index} className="border shadow rounded-xl overflow-hidden">
-      {isLoadedContent ? <Loader /> : nft?.playbackId && !['0x'].includes(nft?.playbackId) && nft?.playbackId.length < 18 ?
+      {/* {isLoadedContent ? <Loader /> : nft?.playbackId && !['0x'].includes(nft?.playbackId) && nft?.playbackId.length < 18 ?
        <div className='m-4 pl-1'>{getTemplateByTypeFile(nft?.image ?? "", handledDescription[0], nft.playbackId, nft.name)}</div> :
         <div className="pt-2 m-auto w-20 h-20">{getTemplateByTypeFile(base64Img, 'image')}</div>
-      }
+      } */}
+      {isLoadedContent ? <Loader /> : nft?.decodedImage ?  <div className='m-4 pl-1'>{getTemplateByTypeFile(nft?.decodedImage , handledDescription[0])}</div>
+      : <div className="ml-20 mr-20">{getTypeContentIcon(handledDescription[0])}</div>}
       <div className="p-4">
       <p style={{ height: '20px' }} className="text-sm font-semibold text-gray-400">ID: {nft?.tokenId}</p>
         <p style={{ height: '20px' }} className="text-sm font-semibold text-gray-400">NAME: {nft?.name}</p>

@@ -65,7 +65,7 @@ export async function loadNFTs({typeAction, nftId}: LoadNftProps): Promise<Respo
              owner: tmpEncData.owner,
              image: meta.data.image,
              encodedInfo: tmpEncData.encData,
-             playbackId: meta.data.videoId,
+             decodedImage: '',
              name: meta.data.name,
              description: meta.data.description,
            }

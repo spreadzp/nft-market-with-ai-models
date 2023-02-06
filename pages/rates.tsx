@@ -29,10 +29,10 @@ function Rates() {
     useEffect(() => {
         (async () => {
           const resLoad: ResponseLoadNfts = await loadNFTs({ typeAction: ACTOR.All })
-          const notOwnedNft = resLoad.nfts.filter((item: NFTProps) => item.owner !== resLoad.currentAddress)
+          const notOwnedNft = resLoad.nfts.filter((item: NFTProps) => item?.owner !== resLoad.currentAddress)
           console.log("🚀 ~ file: rates.tsx:31 ~ notOwnedNft", notOwnedNft)
           setNfts(notOwnedNft) 
-          const notOwnedIds = notOwnedNft.map((item: NFTProps) => item.tokenId)
+          const notOwnedIds = notOwnedNft.map((item: NFTProps) => item?.tokenId)
           setIds(notOwnedIds)
           setAccount(resLoad.currentAddress)
           setMarketPlaceContract(resLoad.marketPlaceContract)
@@ -63,7 +63,7 @@ function Rates() {
         }
     }
     const showNft = (nft: NFTProps) => {
-        router.push(`/nft-market/${nft.tokenId}`)
+        router.push(`/nft-market/${nft?.tokenId}`)
     }
     return (<>
         {isWithdraw ? <Loader /> :
@@ -88,7 +88,7 @@ function Rates() {
                                                 <tr className="border-b" key={ind}>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{ind + 1}</td>
                                                     <td className="text-sm text-white font-light px-6 py-4 whitespace-nowrap">
-                                                        {item.tokenId}
+                                                        {item?.tokenId}
                                                     </td>
                                                     <td className="text-sm text-white font-light px-6 py-4 whitespace-nowrap">
                                                         <button className="px-6 board-btn rounded" onClick={() => showNft(item)}>
@@ -96,9 +96,9 @@ function Rates() {
                                                         </button>
                                                     </td>
                                                     <td className="text-sm text-white font-light px-6 py-4 whitespace-nowrap">
-                                                        {item.totalSum} ETH
+                                                        {item?.totalSum} ETH
                                                     </td>
-                                                    {item.owner !== account ? Number(item?.totalSum) > 0 ?
+                                                    {item?.owner !== account ? Number(item?.totalSum) > 0 ?
                                                         <td className="text-sm text-white font-light  whitespace-nowrap">
                                                             <button className="px-6 board-btn rounded" onClick={() => makeAction(item)}>
                                                                 Withdraw sum

@@ -36,15 +36,15 @@ function PosterImage({ imageUrl }: PosterImageProps) {
     </>
   );
 };
-export const getTemplateByTypeFile = (imageUrl: string, typeFile: string, pbId?: string, titleVideo?: string) => {
+export const getTemplateByTypeFile = (imageBase64: string, typeFile: string, pbId?: string, titleVideo?: string) => {
 
   switch (typeFile) {
-    case 'image': return (<img className="rounded " width="350" src={imageUrl} />)
+    case 'image': return (<img className="rounded " width="350" src={imageBase64} />)
     case 'video': return (
       <Player
         title={titleVideo}
         playbackId={pbId} 
-        poster={<PosterImage imageUrl={imageUrl} />}
+        poster={<PosterImage imageUrl={imageBase64} />}
         showPipButton
         objectFit="cover"
         theme={{
@@ -77,6 +77,6 @@ export const getTemplateByTypeFile = (imageUrl: string, typeFile: string, pbId?:
     //   // >
     //   // </iframe>
     //)
-    default: return (<textarea className="rounded  text-white" rows={80} cols={60} value={imageUrl} />)
+    default: return (<textarea className="rounded  text-white" rows={80} cols={60} value={imageBase64} />)
   }
 }
